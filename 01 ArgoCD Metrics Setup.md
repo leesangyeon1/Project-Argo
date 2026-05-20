@@ -1,12 +1,3 @@
----
-tags: [hobby-lobby, argocd, monitoring, kubernetes, script]
-script: 01_argocd_metrics_setup.sh
-step: "1 of 7"
-description: Verify and enable ArgoCD metrics endpoints for Prometheus scraping
-depends_on: kubectl, kubeconfig pointed at target cluster
-next: "[[02 Prometheus Scrape Config]]"
----
-
 # 01 — ArgoCD Metrics Setup
 
 Verifies and enables the three ArgoCD metrics Services so Prometheus has stable endpoints to scrape. Creates any missing Services and runs a live port-forward connectivity test against `/metrics`.
@@ -131,9 +122,7 @@ fi
 
 log_info "ArgoCD namespace '$ARGOCD_NAMESPACE' confirmed."
 
-# ---------------------------------------------------------------------------
 # STEP 1: CHECK ARGOCD APPLICATION CONTROLLER METRICS SERVICE
-# ---------------------------------------------------------------------------
 log_info "Checking argocd-metrics Service (application-controller metrics)…"
 
 # Fetch the argocd-metrics Service; it exposes port 8082 for Prometheus
@@ -162,9 +151,7 @@ EOF
   log_info "argocd-metrics Service created on port ${METRICS_PORT}."
 fi
 
-# ---------------------------------------------------------------------------
 # STEP 2: CHECK ARGOCD SERVER METRICS SERVICE
-# ---------------------------------------------------------------------------
 log_info "Checking argocd-server-metrics Service…"
 
 if kubectl get svc argocd-server-metrics -n "$ARGOCD_NAMESPACE" &>/dev/null; then
